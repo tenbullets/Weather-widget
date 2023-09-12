@@ -11,12 +11,12 @@ import java.awt.image.BufferedImage;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        final BufferedImage background = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\background.jpg"));
-        final BufferedImage cloud = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\cloud.jpg"));
-        final BufferedImage rain = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\rain.jpg"));
-        final BufferedImage sun = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\sun.jpg"));
-        final BufferedImage snow = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\snow.jpg"));
-        final BufferedImage clear = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\clear.jpg"));
+        final BufferedImage background = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\background.png"));
+        final BufferedImage cloud = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\cloud.png"));
+        final BufferedImage rain = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\rain.png"));
+        final BufferedImage sun = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\sun.png"));
+        final BufferedImage snow = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\snow.png"));
+        final BufferedImage clear = ImageIO.read(new File("C:\\Users\\MSI\\IdeaProjects\\Weather API\\imgs\\clear.png"));
 
         ArrayList<BufferedImage> imgs = new ArrayList<>();
         imgs.add(sun);
@@ -59,7 +59,7 @@ public class Main {
             characteristic.drawString("Pressure: " + weatherCtg.get(4)+ " mmHg", 100, 750);
             title.dispose();
 
-            ImageIO.write(background, "jpg", new File("result img\\weather.jpg"));
+            ImageIO.write(background, "png", new File("result img\\weather.png"));
 
         } else System.out.println("Некорректное название города!");
     }
