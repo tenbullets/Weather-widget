@@ -7,12 +7,16 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Weather {
-    public final ArrayList<String> weather_list = new ArrayList<>();
+public class WeatherService {
     private final String urlAddress = "https://api.openweathermap.org/data/2.5/weather?q=";
-    public ArrayList<String> getWeather(String city) throws IOException {
+    private final ArrayList<String> weatherList = new ArrayList<>();
+
+    public WeatherInfo getWeather(String city) throws IOException {
+        WeatherInfo weatherInfo = new WeatherInfo(city, weatherList);
+
         URL url = new URL(urlAddress + city + "&APPID=7d8350edceb83ec279fd60d5294f1bdd");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection;
+        connection = (HttpURLConnection) url.openConnection();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder intermediateLine = new StringBuilder();
         String line;
@@ -20,16 +24,17 @@ public class Weather {
             intermediateLine.append(line);
         }
         String str = intermediateLine.toString();
-        weather_list.add(temperature_parser(str));
-        weather_list.add(air_parser(str));
-        weather_list.add(wind_parser(str));
-        weather_list.add(humidity_parser(str));
-        weather_list.add(pressure_parser(str));
 
-        return weather_list;
+        weatherInfo.getWeatherData().add(temperatureParser(str));
+        weatherInfo.getWeatherData().add(airParser(str));
+        weatherInfo.getWeatherData().add(windParser(str));
+        weatherInfo.getWeatherData().add(humidityParser(str));
+        weatherInfo.getWeatherData().add(pressureParser(str));
+
+        return weatherInfo;
     }
 
-    private String air_parser(String rawtxt) {
+    private String airParser(String rawtxt) {
         String regEx = "\"description\\\":\\\"(?:[^\\\"]|\\\"\\\")*\\\"";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(rawtxt);
@@ -43,7 +48,7 @@ public class Weather {
         return a.substring(a.indexOf("\"description\":\"") + 15, a.lastIndexOf('"'));
     }
 
-    private String temperature_parser(String rawtxt) {
+    private String temperatureParser(String rawtxt) {
         String regEx = "\"temp\":....";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(rawtxt);
@@ -60,7 +65,7 @@ public class Weather {
         return Integer.toString(temp);
     }
 
-    private String pressure_parser(String rawtxt) {
+    private String pressureParser(String rawtxt) {
         String regEx = "\"pressure\":....,";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(rawtxt);
@@ -77,7 +82,7 @@ public class Weather {
         return Double.toString((int)pressure);
     }
 
-    private String humidity_parser(String rawtxt) {
+    private String humidityParser(String rawtxt) {
         String regEx = "humidity\":..";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(rawtxt);
@@ -91,7 +96,7 @@ public class Weather {
         return  a.substring(a.indexOf("humidity\":") + 10);
     }
 
-    private String wind_parser(String rawtxt) {
+    private String windParser(String rawtxt) {
         String regEx = "\"wind\":\\{[^}]*\\}";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(rawtxt);
